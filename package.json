@@ -1,26 +1,29 @@
 {
-  "name": "Node-Blog",
-  "version": "1.0.0",
-  "description": "- Building RESTful APIs.\r - Performing CRUD Operations on Multiple Resources.\r - Configuring CORS.\r - Writing Custom Middleware.\r - Using Express Routers to Modularize Application.",
-  "main": "knexfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tyrone-Cartwright/Node-Blog.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Tyrone-Cartwright/Node-Blog/issues"
-  },
-  "homepage": "https://github.com/Tyrone-Cartwright/Node-Blog#readme",
-  "devDependencies": {
-    "nodemon": "^1.18.9"
-  },
-  "dependencies": {
-    "express": "^4.16.4"
-  }
+    "name": "Node-Blog",
+    "version": "1.0.0",
+    "description": "- Building RESTful APIs.\r - Performing CRUD Operations on Multiple Resources.\r - Configuring CORS.\r - Writing Custom Middleware.\r - Using Express Routers to Modularize Application.",
+    "main": "knexfile.js",
+    "scripts": {
+        "server": "nodemon index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Tyrone-Cartwright/Node-Blog.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Tyrone-Cartwright/Node-Blog/issues"
+    },
+    "homepage": "https://github.com/Tyrone-Cartwright/Node-Blog#readme",
+    "devDependencies": {
+        "nodemon": "^1.18.9"
+    },
+    "dependencies": {
+        "express": "^4.16.4",
+        "knex": "^0.16.3",
+        "sqlite3": "^4.0.4"
+    }
 }
