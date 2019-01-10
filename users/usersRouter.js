@@ -1,37 +1,17 @@
-console.log("userServer");
 const express = require("express");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const cors = require("cors");
-const server = express();
+
+const router = express.Router();
 
 const userdb = require("../data/helpers/userDb.js");
+const blogUpperCase = require("../common/blogUpperCase.js");
 
-//Middleware
-function blogUpperCase(req, res, next) {
-  const { users } = res;
+// middleware
 
-  const blogUser = users.map(user => ({
-    ...user,
-    name: user.name.toUpperCase()
-  }));
-
-  res.status(200).json(blogUser);
-
-  next();
-}
-
-server.use(morgan("short"));
-server.use(helmet());
-server.use(express.json());
-server.use(cors());
-
-// Users Routes
-server.get(
-  "/api/userId",
+// endpoints when url begins with /users
+router.get(
+  "/",
   (req, res, next) => {
     //const user = req.params;
-
     userdb
       .get()
       .then(users => {
@@ -50,7 +30,7 @@ server.get(
   blogUpperCase
 );
 
-server.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const user = req.params.id;
 
   userdb
@@ -67,7 +47,7 @@ server.get("/:id", (req, res) => {
     });
 });
 
-server.post("/user", (req, res) => {
+router.post("/", (req, res) => {
   const user = req.body;
 
   if (user) {
@@ -86,7 +66,7 @@ server.post("/user", (req, res) => {
   }
 });
 
-server.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const { name } = req.body;
 
@@ -111,7 +91,7 @@ server.put("/:id", (req, res) => {
   }
 });
 
-server.delete("/api/user/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   userdb
@@ -130,22 +110,4 @@ server.delete("/api/user/:id", (req, res) => {
     );
 });
 
-// // Post Routes
-// server.get("/api/posts", (req, res) => {
-//   const post = req.params.posts;
-
-//   postdb
-//     .get()
-//     .then(post => {
-//       if (post) {
-//         res.status(200).json(post);
-//       } else {
-//         res.status(404).json({ message: "The post could not be retrieved." });
-//       }
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
-
-module.exports = server;
+module.exports = router;

@@ -1,19 +1,14 @@
-console.log("postServer");
 const express = require("express");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const cors = require("cors");
-const postServer = express();
+
+const router = express.Router();
 
 const postdb = require("../data/helpers/postDb.js");
 
-postServer.use(morgan("short"));
-postServer.use(helmet());
-postServer.use(express.json());
-postServer.use(cors());
+// middleware
 
+// endpoints when url begins with /users
 // Post Routes
-postServer.get("/api/posts", (req, res) => {
+router.get("/", (req, res) => {
   const post = req.params.posts;
   postdb
     .get()
@@ -29,7 +24,7 @@ postServer.get("/api/posts", (req, res) => {
     });
 });
 
-postServer.get("/api/posts/:postId", (req, res) => {
+router.get("/:postId", (req, res) => {
   const id = req.params.postId;
   postdb
     .get(id)
@@ -44,7 +39,7 @@ postServer.get("/api/posts/:postId", (req, res) => {
     });
 });
 
-postServer.post("/api/posts", (req, res) => {
+router.post("/", (req, res) => {
   const { userId, text } = req.body;
 
   if (userId && text) {
@@ -66,7 +61,7 @@ postServer.post("/api/posts", (req, res) => {
   }
 });
 
-postServer.put("/api/posts/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const { userId, text } = req.body;
 
@@ -92,7 +87,7 @@ postServer.put("/api/posts/:id", (req, res) => {
   }
 });
 
-postServer.delete("/api/posts/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   postdb
@@ -113,4 +108,4 @@ postServer.delete("/api/posts/:id", (req, res) => {
     );
 });
 
-module.exports = postServer;
+module.exports = router;
