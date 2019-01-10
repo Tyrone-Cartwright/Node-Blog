@@ -1,15 +1,22 @@
+console.log("userServer");
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const server = express();
 
-const postdb = require("../data/helpers/postDb.js");
 const userdb = require("../data/helpers/userDb.js");
 
 //Middleware
 function blogUpperCase(req, res, next) {
-  const blog = req.body.name.toUpperCase();
+  const { users } = res;
+
+  const blogUser = users.map(user => ({
+    ...user,
+    name: user.name.toUpperCase()
+  }));
+
+  res.status(200).json(blogUser);
 
   next();
 }
@@ -20,22 +27,29 @@ server.use(express.json());
 server.use(cors());
 
 // Users Routes
-server.get("/api/userId", (req, res) => {
-  //const user = req.params;
+server.get(
+  "/api/userId",
+  (req, res, next) => {
+    //const user = req.params;
 
-  userdb
-    .get()
-    .then(users => {
-      if (users) {
-        res.status(200).json(users);
-      } else {
-        res.status(404).json({ message: "The user could not be found " });
-      }
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
+    userdb
+      .get()
+      .then(users => {
+        if (users) {
+          res.users = users;
+          next();
+          // res.status(200).json(users);
+        } else {
+          res.status(404).json({ message: "The user could not be found " });
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  },
+  blogUpperCase
+);
+
 server.get("/:id", (req, res) => {
   const user = req.params.id;
 
@@ -116,5 +130,22 @@ server.delete("/api/user/:id", (req, res) => {
     );
 });
 
-// Post Routes
+// // Post Routes
+// server.get("/api/posts", (req, res) => {
+//   const post = req.params.posts;
+
+//   postdb
+//     .get()
+//     .then(post => {
+//       if (post) {
+//         res.status(200).json(post);
+//       } else {
+//         res.status(404).json({ message: "The post could not be retrieved." });
+//       }
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     });
+// });
+
 module.exports = server;
